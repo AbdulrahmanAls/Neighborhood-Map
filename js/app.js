@@ -17,21 +17,21 @@ function closeNav() {
 var map;
 var markers = [];
 
+var locations = [
+    {title: 'Alhamra park ', location: {lat: 25.973062, lng: 43.754495}},
+    {title: 'Afran Alhatab Bakery ', location: {lat: 26.000588, lng: 43.731621}},
+    {title: 'Four guys restaurant ', location: {lat: 25.997484, lng: 43.727867}},
+    {title: 'Alkaife', location: {lat: 26.002393, lng: 43.733860}},
+    {title: 'Kudo', location: {lat: 25.998950, lng: 43.729622}},
+];
+
 function initMap() {
 
     map = new google.maps.Map(document.getElementById('map'), {
         center: {lat: 25.975277, lng: 43.74577},
         zoom: 14
     });
-
-    var locations = [
-        {title: 'Alhamra park ', location: {lat: 25.973062, lng: 43.754495}},
-        {title: 'Afran Alhatab Bakery ', location: {lat: 26.000588, lng: 43.731621}},
-        {title: 'Four guys restaurant ', location: {lat: 25.997484, lng: 43.727867}},
-        {title: 'Alkaife', location: {lat: 26.002393, lng: 43.733860}},
-        {title: 'Kudo', location: {lat: 25.998950, lng: 43.729622}},
-    ];
-
+    
 
     var largeInfowindow = new google.maps.InfoWindow();
     var bounds = new google.maps.LatLngBounds();
@@ -73,3 +73,25 @@ function populateInfoWindow(marker, infowindow) {
         });
     }
 }
+
+
+// https://stackoverflow.com/questions/34584181/create-live-search-with-knockout
+
+
+function ViewModel(){
+    var self =this;
+    this.filter = ko.observable();
+
+    this.places = ko.observableArray(locations);
+
+
+    this.visiblePlaces = ko.computed(function(){
+        return this.places().filter(function(place){
+            if(!self.filter() || place.title.toLowerCase().indexOf(self.filter().toLowerCase()) !== -1)
+                return place;
+        });
+    },this);
+
+}
+
+ko.applyBindings(new ViewModel());

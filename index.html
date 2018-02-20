@@ -11,6 +11,12 @@
 
   <div id="mySidenav" class="sidenav">
     <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+
+      <input placeholder="Search for locations" id="filter" type="text" data-bind="textInput: filter"/>
+      <ul data-bind="foreach: visiblePlaces">
+          <li data-bind="text: title"></li>
+      </ul>
+
   </div>
   <div id="main">
     <span onclick="openNav()">&#9776;</span>
