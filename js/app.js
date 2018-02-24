@@ -17,6 +17,7 @@ function closeNav() {
 var map;
 var markers = [];
 
+
 var locations = [
     {title: 'Alhamra park ', location: {lat: 25.973062, lng: 43.754495}},
     {title: 'Afran Alhatab Bakery ', location: {lat: 26.000588, lng: 43.731621}},
@@ -74,53 +75,21 @@ function populateInfoWindow(marker, infowindow) {
     }
 }
 
-
-// https://stackoverflow.com/questions/34584181/create-live-search-with-knockout
-//
-
-function ViewModel(){
-    var self =this;
-    this.filter = ko.observable();
-
-    this.places = ko.observableArray(markers);
-
-
-    this.visiblePlaces = ko.computed(function(){
-        return this.places().filter(function(place){
-            if(!self.filter() || place.title.toLowerCase().indexOf(self.filter().toLowerCase()) !== -1)
-                return place;
-        });
-    },this);
-
+function googleMapsError() {
+    alert("google map can not load.");
 }
 
-ko.applyBindings(new ViewModel());
 
-//
-// var beers = [
-//     {
-//         name: "Dragon's Milk",
-//         brewery: "New Holland Brewing Company",
-//         style: "Imperial Stout"},
-//     {
-//         name: "Oberon",
-//         brewery: "Bell's",
-//         style: "Wheat"},
-//     {
-//         name: "El Molé Ocho",
-//         brewery: "New Holland Brewing Company",
-//         style: "Mole Ale"}
-// ];
-//
-// var viewModel = {
-//     query: ko.observable('')
-// };
-//
-// viewModel.markers = ko.dependentObservable(function() {
-//     var search = this.query().toLowerCase();
-//     return ko.utils.arrayFilter(markers, function(beer) {
-//         return beer.title.toLowerCase().indexOf(search) >= 0;
-//     });
-// }, viewModel);
-//
-// ko.applyBindings(viewModel);
+var viewModel = {
+    query: ko.observable('')
+};
+
+viewModel.markers = ko.dependentObservable(function() {
+    var search = this.query().toLowerCase();
+    return ko.utils.arrayFilter(markers, function(loc) {
+        return loc.title.toLowerCase().indexOf(search) >= 0;
+    });
+}, viewModel);
+
+ko.applyBindings(viewModel);
+
